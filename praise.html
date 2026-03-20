@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Anagha ✨</title>
+
+<style>
+body{
+  background:black;
+  color:white;
+  font-family:Arial;
+  margin:0;
+  overflow:hidden;
+}
+
+/* container */
+.container{
+  display:flex;
+  height:100vh;
+  width:100vw;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* slides */
+.slide{
+  flex:0 0 100vw;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px;
+  scroll-snap-align:center;
+}
+
+img{
+  width:60%;
+  max-width:500px;
+  border-radius:15px;
+  margin:20px 0;
+}
+
+p, h2{
+  font-size:28px;
+  line-height:1.7;
+  max-width:700px;
+}
+
+h1{
+  position:fixed;
+  top:20px;
+  width:100%;
+  text-align:center;
+  z-index:5;
+}
+
+/* buttons */
+.buttons{
+  position:fixed;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  z-index:10;
+}
+
+a{
+  background:#ff4d6d;
+  padding:12px 22px;
+  border-radius:12px;
+  color:white;
+  text-decoration:none;
+  margin:10px;
+  font-size:16px;
+}
+
+/* floating hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:20px;
+  animation:float 8s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes float{
+  0%{
+    transform:translateY(0) rotate(-25deg);
+    opacity:0.25;
+  }
+  40%{
+    opacity:0.45;
+  }
+  100%{
+    transform:translateY(-110vh) rotate(-25deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgMusic" autoplay loop>
+<source src="music1.mpeg" type="audio/mpeg">
+</audio>
+
+<h1>Why Anagha is Amazing ✨</h1>
+
+<div class="container">
+
+<div class="slide">
+<h2>Her Beauty</h2>
+<img src="photo1.jpg">
+<p>Your smile is my favorite view in the world.</p>
+</div>
+
+<div class="slide">
+<img src="photo2.jpg">
+<p>Your eyes hold more warmth than the sun.</p>
+</div>
+
+<div class="slide">
+<h2>Her Heart… It’s so pure</h2>
+<img src="photo31.jpg">
+</div>
+
+<div class="slide">
+<img src="photo4.jpg">
+<p>You are kind…</p>
+</div>
+
+<div class="slide">
+<img src="photo8.jpg">
+<p>And cool… 😎</p>
+</div>
+
+<div class="slide">
+<img src="photo5.jpg">
+<p>You are strong too.</p>
+</div>
+
+<div class="slide">
+<img src="photo6.jpg">
+<p>You care deeply about everyone.</p>
+</div>
+
+<div class="slide">
+<img src="photo7.jpg">
+<p>You make life feel lighter and happier.</p>
+</div>
+
+<div class="slide">
+<h2>The Best Part</h2>
+<p>
+You are not just beautiful outside…<br>
+Your heart is even more beautiful.
+</p>
+</div>
+
+</div>
+
+<div class="buttons">
+<a href="index.html">Back</a>
+</div>
+
+<script>
+
+/* MUSIC */
+const music = document.getElementById("bgMusic");
+
+window.addEventListener("load", () => {
+
+  let time = sessionStorage.getItem("musicTime");
+
+  if(time){
+    music.currentTime = time;
+  }
+
+  music.volume = 0;
+
+  music.play().then(()=>{
+    // 🔥 smooth fade-in
+    let vol = 0;
+    let fade = setInterval(()=>{
+      if(vol < 1){
+        vol += 0.05;
+        music.volume = vol;
+      } else {
+        clearInterval(fade);
+      }
+    },100);
+  }).catch(() => {
+
+    const resume = () => {
+      music.play();
+      document.removeEventListener("click", resume);
+      document.removeEventListener("touchstart", resume);
+    };
+
+    document.addEventListener("click", resume);
+    document.addEventListener("touchstart", resume);
+  });
+
+});
+
+/* SAVE MUSIC TIME */
+setInterval(()=>{
+  sessionStorage.setItem("musicTime", music.currentTime);
+},1000);
+
+
+/* TYPEWRITER */
+function typeText(element, speed = 35){
+  const text = element.dataset.text;
+  let i = 0;
+
+  element.textContent = "";
+
+  function typing(){
+    if(i < text.length){
+      element.textContent += text[i];
+      i++;
+      setTimeout(typing, speed);
+    }
+  }
+
+  typing();
+}
+
+
+/* STORE ORIGINAL TEXT */
+document.querySelectorAll("p, h2").forEach(el=>{
+  el.dataset.text = el.textContent.trim();
+  el.textContent = "";
+});
+
+
+/* SLIDES */
+let slides = document.querySelectorAll(".slide");
+const container = document.querySelector(".container");
+
+let currentIndex = -1;
+
+
+/* TYPE SLIDE */
+function typeSlide(index){
+  if(currentIndex === index) return;
+
+  currentIndex = index;
+
+  let elements = slides[index].querySelectorAll("p, h2");
+
+  elements.forEach(el=>{
+    if(!el.classList.contains("typed")){
+      typeText(el, 35);
+      el.classList.add("typed");
+    }
+  });
+}
+
+
+/* SCROLL DETECTION */
+container.addEventListener("scroll", ()=>{
+  let index = Math.floor((container.scrollLeft + window.innerWidth/2) / window.innerWidth);
+  typeSlide(index);
+});
+
+
+/* FLOATING HEARTS */
+function createHeart(){
+  let heart=document.createElement("div");
+  heart.className="heart";
+
+  let hearts=["❤️","💖","💗","💝","🩷","🤍"];
+  heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=(20+Math.random()*35)+"px";
+
+  document.body.appendChild(heart);
+
+  setTimeout(()=>{heart.remove();},8000);
+}
+
+setInterval(createHeart,900);
+
+
+/* HEART BURST */
+document.addEventListener("click",(e)=>{
+
+let hearts=["❤️","💖","💗","💝","🩷","🤍"];
+
+for(let i=0;i<8;i++){
+
+let heart=document.createElement("div");
+heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+
+heart.style.position="fixed";
+heart.style.left=e.clientX+"px";
+heart.style.top=e.clientY+"px";
+heart.style.fontSize="24px";
+heart.style.pointerEvents="none";
+heart.style.transition="all 1s ease";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+  heart.style.transform=`translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*200}px)`;
+  heart.style.opacity="0";
+},10);
+
+setTimeout(()=>{heart.remove();},1000);
+
+}
+});
+
+</script>
+
+</body>
+</html>
