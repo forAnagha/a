@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  
+<title>For Anagha ❤️</title>
+
+<style>
+body{
+background:black;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:50px;
+margin:0;
+overflow-y:auto;          /* ✅ allow vertical scroll */
+overflow-x:hidden;        /* ✅ prevent sideways scroll */
+-webkit-overflow-scrolling: touch; /* smooth mobile scroll */
+}
+
+.buttons{
+position:fixed;
+bottom:30px;
+width:100%;
+}
+
+a{
+background:#ff4d6d;
+padding:12px 22px;
+border-radius:12px;
+color:white;
+text-decoration:none;
+margin:10px;
+font-size:16px;
+}
+
+/* hearts */
+
+.heart{
+position:fixed;
+bottom:-20px;
+font-size:20px;
+animation:float 8s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(0) rotate(-25deg);
+opacity:0.25;
+}
+
+40%{
+opacity:0.45;
+}
+
+100%{
+transform:translateY(-110vh) rotate(-25deg);
+opacity:0;
+}
+}
+
+p{
+font-size:28px;
+line-height:1.7;
+max-width:800px;
+margin:auto;
+}
+</style>
+
+</head>
+
+<body>
+
+<audio id="bgMusic" loop>
+<source src="music1.mpeg" type="audio/mpeg">
+</audio>
+
+<h1>A Poem For Anagha ❤️</h1>
+
+<p>
+Anagha isn’t the type who tries to stand out<br>
+she just naturally does…<br><br>
+
+She’s different from everyone else…<br>
+in the best way possible.<br><br>
+
+I don’t think I’ve ever seen her be wrong,<br>
+and honestly, I don’t even know how…<br>
+Sometimes it feels like she isn’t even real 😭<br>
+but at the same time,<br>
+she’s the most real person I’ve ever met!!<br><br>
+
+She can’t fake anything…<br>
+Her smile isn’t forced,<br>
+and her vibes are never fake.<br><br>
+
+There’s something so pure about her<br>
+the way she talks,<br>
+the way she cares,<br>
+the way she simply exists…💖<br><br>
+
+Still, she tries her best to hide…<br>
+to hide her pain <br>
+and stay strong all the time,<br>
+like she doesn’t want anyone to worry.<br><br>
+
+She’s the kind of person<br>
+you don’t fully understand at first,<br>
+but the more you get to know her,<br>
+the more you realize<br>
+she’s something rare…<br>
+something truly special.<br><br>
+
+She’s like an angel,<br>
+not because she’s perfect…<br>
+though sometimes it feels like she is… 😅<br>
+but because her heart is.<br>
+
+She’s the most beautiful woman in my life,<br>
+not just for how she looks,<br>
+but for who she is inside.<br><br>
+
+And I’m really grateful to have her…<br>
+someone who cares so deeply,<br>
+loves so quietly,<br>
+and carries such a pure soul.<br><br>
+
+She feels unreal sometimes…<br>
+but one thing I know for sure,<br>
+she could never be fake.<br><br>
+
+I love you Anagha…❤️
+</p>
+
+<br><br><br>
+
+<p>I tried my best… but I know no words could ever fully describe you</p>
+
+<br><br>
+
+<div class="buttons">
+<a href="index.html">Back</a>
+</div>
+
+<script>
+
+const music = document.getElementById("bgMusic");
+
+/* LOAD + RESUME MUSIC */
+window.addEventListener("load", () => {
+
+  let time = sessionStorage.getItem("musicTime");
+
+  if(time){
+    music.currentTime = time;
+  }
+
+  music.volume = 0;
+
+  music.play().then(()=>{
+    // 🔥 smooth fade-in
+    let vol = 0;
+    let fade = setInterval(()=>{
+      if(vol < 1){
+        vol += 0.05;
+        music.volume = vol;
+      } else {
+        clearInterval(fade);
+      }
+    },100);
+  }).catch(() => {
+
+    const resume = () => {
+      music.play();
+      document.removeEventListener("click", resume);
+      document.removeEventListener("touchstart", resume);
+    };
+
+    document.addEventListener("click", resume);
+    document.addEventListener("touchstart", resume);
+  });
+
+});
+
+/* SAVE MUSIC TIME */
+setInterval(()=>{
+  sessionStorage.setItem("musicTime", music.currentTime);
+},1000);
+
+/* FLOATING HEARTS */
+function createHeart(){
+
+let heart=document.createElement("div");
+heart.className="heart";
+
+let hearts=["❤️","💖","💗","💝","🩷","🤍"];
+heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(20+Math.random()*35)+"px";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{heart.remove();},8000);
+}
+
+setInterval(createHeart,900);
+
+/* HEART BURST */
+document.addEventListener("click",(e)=>{
+
+let hearts=["❤️","💖","💗","💝","🩷","🤍"];
+
+for(let i=0;i<8;i++){
+let heart=document.createElement("div");
+
+heart.innerHTML=hearts[Math.floor(Math.random()*hearts.length)];
+
+heart.style.position="fixed";
+heart.style.left=e.clientX+"px";
+heart.style.top=e.clientY+"px";
+heart.style.fontSize="24px";
+heart.style.pointerEvents="none";
+heart.style.transition="all 1s ease";
+
+document.body.appendChild(heart);
+
+setTimeout(()=>{
+heart.style.transform=`translate(${(Math.random()-0.5)*200}px, ${(Math.random()-0.5)*200}px)`;
+heart.style.opacity="0";
+},10);
+
+setTimeout(()=> heart.remove(),1000);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
